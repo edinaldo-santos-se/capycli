@@ -57,6 +57,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
     def __init__(self, onlyCreateReleases: bool = False) -> None:
         self.source_folder: str = ""
         self.download: bool = False
+        self.patchlicense: bool = False
         self.relaxed_debian_parsing: bool = False
         self.onlyCreateReleases: bool = onlyCreateReleases
 
@@ -327,6 +328,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                             "    WARNING: SW360 external id", repository_type,
                             release_data["externalIds"][repository_type],
                             "differs from BOM id", data["externalIds"][repository_type])
+                        
+        if self.patchlicense and len(cx_comp.licenses):
+            ids = list(map(lambda lic: lic.license.id, cx_comp.licenses))
+            update_data["mainLicenseIds"] = ids
 
         if len(update_data):
             # Some releases return 400 code while updating - to not break the script catch this exception
@@ -674,6 +679,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             self.source_folder = args.source
 
         self.download = args.download
+        self.patchlicense = args.patchlicense
 
         if args.dbx:
             print_text("Using relaxed debian version checks")

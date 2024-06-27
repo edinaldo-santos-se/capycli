@@ -8,6 +8,14 @@
 # -------------------------------------------------------------------------------
 
 """Module allowing for ``python -m CaPyCli ...``."""
+import sys
+from capycli.setup.no_ssl_verification import no_ssl_verification
 from capycli.main import cli
 
-cli.main()
+sslVerify = '--no-ssl-verify' not in sys.argv
+
+if not sslVerify:
+    with no_ssl_verification():
+        cli.main()
+else:
+    cli.main()

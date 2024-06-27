@@ -290,6 +290,18 @@ class CommandlineSupport():
             action="store_true",
         )
 
+        self.parser.add_argument(
+            "--patchlicense",
+            help="enable updating release license",
+            action="store_true",
+        )
+
+        self.parser.add_argument(
+            "--no-ssl-verify",
+            help="disable ssl verification",
+            action="store_true",
+        )
+
         # used by getdependencies python
         self.parser.add_argument(
             "--search-meta-data",
